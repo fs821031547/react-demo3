@@ -3,9 +3,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ToApp from './components/toapp'
-import { DatePicker } from 'antd';
+import  DatePicker  from 'antd/lib/date-picker';
 
-import 'antd/dist/antd.css'; 
+import 'antd/lib/date-picker/style/css'; 
 
 ReactDOM.render(
   <DatePicker />,

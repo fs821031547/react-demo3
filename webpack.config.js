@@ -1,6 +1,7 @@
 const path = require("path");
 const ROOT_PATH = path.resolve(__dirname);
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //生成html
+const autoprefixer = require("autoprefixer");
 
 module.exports = {
   entry: "./src/index.js",
@@ -21,20 +22,44 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader?modules&localIdentName=[local]-[hash:base64:5]"]
+        // use: ["style-loader", "css-loader", "postcss-loader"],
+        use: [
+          { loader: "style-loader" },
+
+          {
+            loader: "css-loader",
+
+            // 开启了CSS Module功能，避免类名冲突问题
+            options: {
+              modules: true,
+              localIdentName: "[name]-[local]-[hash:base64:5]"
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: function() {
+                return [autoprefixer];
+              }
+            }
+          }
+        ]
+
+        // use: ["style-loader", "css-loader?modules&localIdentName=[local]-[hash:base64:5]","postcss-loader"]
       },
+
       {
         test: /\.(jpe?g|png|gif|mp4|webm|otf|webp)$/,
-        use: ['url-loader?limit=10240']
+        use: ["url-loader?limit=10240"]
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'url-loader?limit=10000'
+        use: "url-loader?limit=10000"
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader'
-      },
+        use: "file-loader"
+      }
     ]
   },
   resolve: {
@@ -46,5 +71,12 @@ module.exports = {
       template: "./index.html", //html模板路径
       hash: false
     })
-  ]
+  ],
+  devServer: {
+    compress: true, // enable gzip compression
+    open: true,
+    port: 7070,
+    inline: true
+    // ...
+  }
 };

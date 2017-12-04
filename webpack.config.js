@@ -1,7 +1,7 @@
 const path = require("path");
-const ROOT_PATH = path.resolve(__dirname);
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //生成html
-const autoprefixer = require("autoprefixer");
+const autoprefixer = require("autoprefixer"); //css自动添加浏览器后缀
+const ExtractTextPlugin = require("extract-text-webpack-plugin"); //css单独打包
 
 module.exports = {
   entry: "./src/index.js",
@@ -14,7 +14,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loader: "babel-loader",
-        include: path.resolve(ROOT_PATH, "src"),
+        include: path.resolve(__dirname, "src"),
         options: {
           presets: ["react"]
         },
@@ -22,32 +22,36 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        // use: ["style-loader", "css-loader", "postcss-loader"],
         use: [
-          { loader: "style-loader" },
-
           {
-            loader: "css-loader",
-
+            // exclude: /^node_modules$/,
             // 开启了CSS Module功能，避免类名冲突问题
             options: {
               modules: true,
               localIdentName: "[name]-[local]-[hash:base64:5]"
             }
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              plugins: function() {
-                return [autoprefixer];
-              }
-            }
           }
-        ]
-
-        // use: ["style-loader", "css-loader?modules&localIdentName=[local]-[hash:base64:5]","postcss-loader"]
+        ],
+        loader: ExtractTextPlugin.extract("style", ["css", "autoprefixer"])
       },
-
+      {
+        test: /\.less$/,
+        exclude: /^node_modules$/,
+        loader: ExtractTextPlugin.extract("style", [
+          "css",
+          "autoprefixer",
+          "less"
+        ])
+      },
+      {
+        loader: "postcss-loader",
+        options: {
+          plugins: function() {
+            return [autoprefixer];
+          }
+        }
+      },
+      // use: ["style-loader", "css-loader?modules&localIdentName=[local]-[hash:base64:5]","postcss-loader"]
       {
         test: /\.(jpe?g|png|gif|mp4|webm|otf|webp)$/,
         use: ["url-loader?limit=10240"]

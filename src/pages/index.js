@@ -8,4 +8,13 @@ export default [
       },'ticket')
     }
   },
+  {
+    name: 'demo',
+    path: '/demo',
+    component(location, cb) {
+      require.ensure([], require => {
+          cb(null, require('./demo').default)
+      },'demo')
+    }
+  },
 ]

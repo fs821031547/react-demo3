@@ -1,36 +1,49 @@
-import React, {Component, PropTypes} from 'react';
-import { Router, Route, Redirect, IndexRoute, browserHistory, hashHistory } from 'react-router';
+import React, { Component, PropTypes } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  hashHistory
+} from "react-router-dom";
 
-import padBox from '../components/padBox'; 
-import demo from '../components/demo'; 
+import padBox from "../components/padBox";
+// import demo from "../pages/demo";
+// import ticket from "../pages/ticket";
+import plan from "../pages/plan";
+import { connect } from "react-redux";
 
 class Roots extends Component {
-    render() {
-        return (
-            <div>{this.props.children}</div>
-        );
-    }
+  render() {
+    return <div>{this.props.children}</div>;
+  }
 }
 
-const history = process.env.NODE_ENV !== 'production' ? browserHistory : hashHistory;
+// const history =
+//   process.env.NODE_ENV !== "production" ? browserHistory : hashHistory;
 
-
+const demo = (location, cb) => {
+  require.ensure(
+    [],
+    require => {
+      cb(null, require("../pages/demo").default);
+    },
+    "demo"
+  );
+};
 const ticket = (location, cb) => {
-    require.ensure([], require => {
-        cb(null, require('../Component/ticket').default)
-    },'ticket')
-}
+  require.ensure(
+    [],
+    require => {
+      cb(null, require("../pages/ticket").default);
+    },
+    "ticket"
+  );
+};
 
-
-const RouteConfig = (
-    <Router history={history}>
-        <Route path="/" component={Roots}>
-            <IndexRoute component={ticket} />//首页
-            <Route path="index" component={index} />
-            <Route path="demo" getComponent={demo} />//帮助中心
-            <Redirect from='*' to='/'  />
-        </Route>
-    </Router>
+const RouteConfig = () => (
+  <Router>
+    <Route path="/plan" component={plan} />
+  </Router>
 );
 
-export default RouteConfig;
+export default connect()(RouteConfig);

@@ -7,7 +7,8 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "build.js"
+    filename: "build.js",
+    chunkFilename: "[name].[chunkhash:5].min.js"
   },
   module: {
     rules: [
@@ -16,40 +17,34 @@ module.exports = {
         loader: "babel-loader",
         include: path.resolve(__dirname, "src"),
         options: {
-          presets: ["react"]
+          presets: ["es2015", "react", "stage-0"]
         },
         exclude: /node_modules/
       },
       {
-        test: /\.css$/,
+        test: /\.(css|less)$/,
         use: [
+          { loader: "style-loader" },
           {
-            // exclude: /^node_modules$/,
             // 开启了CSS Module功能，避免类名冲突问题
             options: {
               modules: true,
               localIdentName: "[name]-[local]-[hash:base64:5]"
+            },
+            loader: "css-loader"
+          },
+          {
+            loader: "less-loader"
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: function() {
+                return [autoprefixer];
+              }
             }
           }
-        ],
-        loader: ExtractTextPlugin.extract("style", ["css", "autoprefixer"])
-      },
-      {
-        test: /\.less$/,
-        exclude: /^node_modules$/,
-        loader: ExtractTextPlugin.extract("style", [
-          "css",
-          "autoprefixer",
-          "less"
-        ])
-      },
-      {
-        loader: "postcss-loader",
-        options: {
-          plugins: function() {
-            return [autoprefixer];
-          }
-        }
+        ]
       },
       // use: ["style-loader", "css-loader?modules&localIdentName=[local]-[hash:base64:5]","postcss-loader"]
       {

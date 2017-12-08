@@ -1,17 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/style.css" rel="stylesheet">
-  </head>
-  <body>
-   <div>
-     
-   </div>
-   <script>
-     
-   </script>
-  </body>
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css/style.css" rel="stylesheet">
+  <script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
+  <script>
+    if ('addEventListener' in document) {
+      document.addEventListener('DOMContentLoaded', function () {
+        FastClick.attach(document.body);
+      }, false);
+    }
+    if (!window.Promise) {
+      document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"' +
+        '>' + '<' + '/' + 'script>');
+    }
+  </script>
+  <style>
+    .wrapper {
+      display: grid;
+      grid-template-columns: 100px 100px 100px;
+      grid-template-rows: 50px 50px;
+    }
+
+    .item-a {
+      grid-area: header;
+    }
+
+    .item-b {
+      grid-area: main;
+    }
+
+    .item-c {
+      grid-area: sidebar;
+    }
+
+    .item-d {
+      grid-area: footer;
+    }
+
+    .container {
+      grid-template-columns: 50px 50px 50px 50px;
+      grid-template-rows: auto;
+      grid-template-areas: "header header header header" "main main . sidebar" "footer footer footer footer";
+    }
+  </style>
+</head>
+
+<body>
+  <div></div>
+  <script>
+  </script>
+</body>
+
 </html>

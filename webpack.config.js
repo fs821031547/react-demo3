@@ -1,7 +1,7 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin"); //生成html
-const autoprefixer = require("autoprefixer"); //css自动添加浏览器后缀
-const ExtractTextPlugin = require("extract-text-webpack-plugin"); //css单独打包
+const path = require("path")
+const HtmlWebpackPlugin = require("html-webpack-plugin") //生成html
+const autoprefixer = require("autoprefixer") //css自动添加浏览器后缀
+// const ExtractTextPlugin = require("extract-text-webpack-plugin") //css单独打包
 
 module.exports = {
   entry: "./src/index.js",
@@ -17,6 +17,7 @@ module.exports = {
         loader: "babel-loader",
         include: path.resolve(__dirname, "src"),
         options: {
+          plugins: [["import", [{ style: "css", libraryName: "antd-mobile" }]]], //按需加载antd
           presets: ["es2015", "react", "stage-0"]
         },
         exclude: /node_modules/
@@ -27,10 +28,6 @@ module.exports = {
           { loader: "style-loader" },
           {
             // 开启了CSS Module功能，避免类名冲突问题
-            options: {
-              modules: true,
-              localIdentName: "[name]-[local]-[hash:base64:5]"
-            },
             loader: "css-loader"
           },
           {
@@ -40,7 +37,7 @@ module.exports = {
             loader: "postcss-loader",
             options: {
               plugins: function() {
-                return [autoprefixer];
+                return [autoprefixer]
               }
             }
           }
@@ -62,7 +59,15 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx"],
+    alias:{
+      'comp':path.resolve(__dirname,"src/components/"),
+      'route':path.resolve(__dirname,"./src/route/"),
+      'reduce':path.resolve(__dirname,"./src/reduce/"),
+      'style':path.resolve(__dirname,"./src/style/"),
+      'util':path.resolve(__dirname,"./src/util/"),
+      'json':path.resolve(__dirname,"./src/json/"),
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -78,4 +83,4 @@ module.exports = {
     inline: true
     // ...
   }
-};
+}

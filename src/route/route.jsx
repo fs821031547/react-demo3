@@ -1,49 +1,34 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react"
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Redirect,
-  hashHistory
-} from "react-router-dom";
+  Link
+} from "react-router-dom"
 
-import padBox from "../components/padBox";
-// import demo from "../pages/demo";
-// import ticket from "../pages/ticket";
-import plan from "../pages/plan";
-import { connect } from "react-redux";
-
-class Roots extends Component {
-  render() {
-    return <div>{this.props.children}</div>;
-  }
-}
+import test from "../pages/test/test"
+import test1 from "../pages/test/test1"
+import test2 from "../pages/test/test2"
+import test3 from "../pages/test/test3"
+import { connect } from "react-redux"
 
 // const history =
 //   process.env.NODE_ENV !== "production" ? browserHistory : hashHistory;
 
-const demo = (location, cb) => {
-  require.ensure(
-    [],
-    require => {
-      cb(null, require("../pages/demo").default);
-    },
-    "demo"
-  );
-};
-const ticket = (location, cb) => {
-  require.ensure(
-    [],
-    require => {
-      cb(null, require("../pages/ticket").default);
-    },
-    "ticket"
-  );
-};
-
 const RouteConfig = () => (
   <Router>
-    <Route path="/plan" component={plan} />
+    <div>
+      <Link to="/">test</Link>
+      <Link to="/test1">test1</Link>
+      <Link to="/test2">test2</Link>
+      <Link to="/test3">test3</Link>
+      <Route exact path="/" component={test} />
+      <Route path="/test1" component={test1} />
+      <Route path="/test2" component={test2} />
+      <Route path="/test3" component={test3} />
+    </div>
   </Router>
-);
+)
 
-export default connect()(RouteConfig);
+
+export default connect()(RouteConfig)

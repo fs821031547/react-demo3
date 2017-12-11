@@ -2,6 +2,7 @@ const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin") //生成html
 const autoprefixer = require("autoprefixer") //css自动添加浏览器后缀
 // const ExtractTextPlugin = require("extract-text-webpack-plugin") //css单独打包
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js",
@@ -74,13 +75,29 @@ module.exports = {
       //根据模板插入css/js等生成最终HTML
       template: "./index.html", //html模板路径
       hash: false
-    })
+    }),
+    new CopyWebpackPlugin([
+      { from: "src/static/login.html", to: "login.html" }
+    ])
   ],
   devServer: {
     compress: true, // enable gzip compression
     open: true,
     port: 7070,
-    inline: true
+    inline: true,
+    contentBase: path.join(__dirname, "src/static"),
+    proxy: {
+      "/sys": {
+        target: "http://dev.op110.com.cn/",
+        pathRewrite: {
+          "^/sys": "/sys"
+        },
+        // ignorePath: true,
+        changeOrigin: true,
+        secure: false,
+        logLevel: "debug"
+      }
+    }
     // ...
   }
 }
